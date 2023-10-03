@@ -8,8 +8,8 @@
              x:DataType="vm:MainViewModel">
 	<Grid RowDefinitions="50,*">
 		
-		<Button x:Name="PART_Button" Content="Click Me"/>
+		<Button x:Name="PART_Button" Content="Loading" IsEnabled="False"/>
 		
-		<WebView x:Name="PART_WebView" Grid.Row="1" Url="https://www.bilibili.com"/>
+		<WebView x:Name="PART_WebView" Grid.Row="1" Url="https://google.com/"/>
 	</Grid>
 </UserControl>
