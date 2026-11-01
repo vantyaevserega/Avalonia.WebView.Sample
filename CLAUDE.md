@@ -23,7 +23,6 @@ dotnet run --project Source/WebViewSample.Desktop
 
 - `Source/WebViewSample` — shared UI library (`net10.0`): `App`, `Views/MainView` (WebView + button), ReactiveUI view models.
 - `Source/WebViewSample.Desktop` — desktop entry point; `Program.cs` calls `.UseDesktopWebView()` (WebView2 on Windows).
-- `Source/WebViewSample.Android`, `Source/WebViewSample.iOS` — legacy mobile heads, **not in the solution** and not maintained.
 - `Directory.Packages.props` — central package management (all versions live here).
 - `Directory.Build.props`, `Build/Directory.build.common.*` — shared MSBuild settings (nullable warnings are errors).
 
