@@ -1,8 +1,17 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace WebViewSample.Views;
+
 public partial class MainView : UserControl
 {
+    // Installs a page-side handler for host -> JS messages and notifies the host that the page is ready.
+    // invokeCSharpAction is injected into every page by Avalonia.Controls.WebView and raises WebMessageReceived.
+    private const string BridgeScript = """
+        window.onHostMessage = function (data) { alert('Clicks: ' + data); };
+        invokeCSharpAction('Click me');
+        """;
+
     private int cnt = 1;
 
     public MainView()
@@ -13,12 +22,14 @@ public partial class MainView : UserControl
         PART_WebView.WebMessageReceived += PART_WebView_WebMessageReceived;
     }
 
-    private void PART_WebView_NavigationCompleted(object? sender, WebViewCore.Events.WebViewUrlLoadedEventArg e)
+    private async void PART_WebView_NavigationCompleted(object? sender, WebViewNavigationCompletedEventArgs e)
     {
+        if (!e.IsSuccess)
+            return;
+
         try
         {
-            PART_WebView.PlatformWebView?.ExecuteScriptAsync("window.chrome.webview.addEventListener('message', function(e) { alert('Clicks: ' + e.data); });");
-            PART_WebView.PlatformWebView?.ExecuteScriptAsync("window.chrome.webview.postMessage(\"Click me\");");
+            await PART_WebView.InvokeScript(BridgeScript);
         }
         catch (Exception exception)
         {
@@ -26,11 +37,22 @@ public partial class MainView : UserControl
         }
     }
 
-    private void PART_WebView_WebMessageReceived(object? sender, WebViewCore.Events.WebViewMessageReceivedEventArgs e)
+    private void PART_WebView_WebMessageReceived(object? sender, WebMessageReceivedEventArgs e)
     {
-        PART_Button.Content = e.Message;
+        PART_Button.Content = e.Body;
         PART_Button.IsEnabled = true;
     }
 
-    private void PART_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => PART_WebView.PostWebMessageAsString((++cnt).ToString(), PART_WebView.Url);
+    private async void PART_Button_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            // setTimeout lets InvokeScript return immediately instead of waiting for the modal alert to be closed.
+            await PART_WebView.InvokeScript($"setTimeout(function () {{ window.onHostMessage && window.onHostMessage({++cnt}); }});");
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
+    }
 }

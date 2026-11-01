@@ -1,25 +1,17 @@
 ﻿<Project>
 	<PropertyGroup>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-		<!--
-			WebView.Avalonia 11.0.0.1 is the last published version and relies on Avalonia private APIs.
-			Stay on the Avalonia 11.x line: 12.x is a breaking major release and Avalonia.ReactiveUI is not shipped for it.
-		-->
-		<AvaloniaVersion>11.3.22</AvaloniaVersion>
-		<AvaloniaReactiveUIVersion>11.3.9</AvaloniaReactiveUIVersion>
-		<AvaloniaWebViewVersion>11.0.0.1</AvaloniaWebViewVersion>
+		<AvaloniaVersion>12.1.4</AvaloniaVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
 		<PackageVersion Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
 		<PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
 		<PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-		<PackageVersion Include="Avalonia.ReactiveUI" Version="$(AvaloniaReactiveUIVersion)" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageVersion Include="WebView.Avalonia" Version="$(AvaloniaWebViewVersion)" />
-		<PackageVersion Include="WebView.Avalonia.Desktop" Version="$(AvaloniaWebViewVersion)" />
+		<!-- Official Avalonia WebView (MIT). Ships on its own release cadence, not in lockstep with Avalonia. -->
+		<PackageVersion Include="Avalonia.Controls.WebView" Version="12.1.1" />
+		<!-- Successor of Avalonia.ReactiveUI, maintained by the ReactiveUI team. -->
+		<PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.6" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.403" />

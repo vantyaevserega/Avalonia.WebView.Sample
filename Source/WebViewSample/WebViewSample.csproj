@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -12,9 +12,7 @@
 		<PackageReference Include="Avalonia" />
 		<PackageReference Include="Avalonia.Themes.Fluent" />
 		<PackageReference Include="Avalonia.Fonts.Inter" />
-		<PackageReference Include="Avalonia.ReactiveUI" />
-		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
-		<PackageReference Include="WebView.Avalonia" />
+		<PackageReference Include="ReactiveUI.Avalonia" />
+		<PackageReference Include="Avalonia.Controls.WebView" />
 	</ItemGroup>
 </Project>

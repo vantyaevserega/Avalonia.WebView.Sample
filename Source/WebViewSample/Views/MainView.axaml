@@ -10,6 +10,6 @@
 		
 		<Button x:Name="PART_Button" Content="Loading" IsEnabled="False"/>
 		
-		<WebView x:Name="PART_WebView" Grid.Row="1" Url="https://google.com/"/>
+		<NativeWebView x:Name="PART_WebView" Grid.Row="1" Source="https://google.com/"/>
 	</Grid>
 </UserControl>
