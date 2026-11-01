@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Project>
-	<!-- Define NETSTANDARD2_1_OR_GREATER for .NET Standard 2.1 targets and above -->
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net7.0'">
-		<DefineConstants>NETSTANDARD2_1_OR_GREATER</DefineConstants>
+	<PropertyGroup>
+		<IsNetStandard Condition="$(TargetFramework.StartsWith('netstandard'))">true</IsNetStandard>
 	</PropertyGroup>
 
-	<!-- Configure trimming for projects on .NET 6 and above -->
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'net7.0'">
+	<!-- Configure trimming analysis for .NET 6+ targets -->
+	<PropertyGroup Condition="'$(IsNetStandard)' != 'true' AND $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))">
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 		<IsTrimmable>true</IsTrimmable>
 	</PropertyGroup>
 
-	<ItemGroup  Condition="'$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net6.0'">
+	<!-- Polyfills for modern C# attributes on .NET Standard targets only -->
+	<ItemGroup Condition="'$(IsNetStandard)' == 'true'">
 		<PackageReference Include="PolySharp">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>build; analyzers</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 
-	<PropertyGroup  Condition="'$(TargetFramework)' == 'netstandard2.0' OR  '$(TargetFramework)' == 'net6.0'">
+	<PropertyGroup Condition="'$(IsNetStandard)' == 'true'">
 		<PolySharpIncludeGeneratedTypes>
 			System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute;
 			System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute;
